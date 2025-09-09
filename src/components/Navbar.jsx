@@ -5,22 +5,22 @@ import { toast } from "react-hot-toast"
 const Navbar = (props) => {
   let isLoggedIn = props.isLoggedIn;
   let setIsLoggedIn = props.setIsLoggedIn;
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
 
-//   // Logout handler function
-//   const logoutHandler = () => {
-//     // Clear token from localStorage or cookies
-//     localStorage.removeItem("token");
+  // Logout handler function
+  const logoutHandler = () => {
+    // Clear token from localStorage or cookies
+    localStorage.removeItem("token");
 
-//     // Update state to reflect logged out status
-//     setIsLoggedIn(false);
+    // Update state to reflect logged out status
+    setIsLoggedIn(false);
     
-//     // Show a success toast notification
-//     toast.success("Logged Out");
+    // Show a success toast notification
+    toast.success("Logged Out");
 
-//     // Redirect to the login page
-//     navigate("/login");
-//   };
+    // Redirect to the login page
+    navigate("/login");
+  };
 
   return (
     <div className='flex justify-between items-center w-11/12 max-w-[1160px] py-4 mx-auto'>

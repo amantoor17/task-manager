@@ -32,7 +32,7 @@ const LoginForm = ({setIsLoggedIn}) => {
         console.log("Base URL:", baseUrl);
 
         try {
-          const response = await fetch(`${baseUrl}/login`, {
+          const response = await fetch(`${baseUrl}/api/v1/login`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -49,19 +49,11 @@ const LoginForm = ({setIsLoggedIn}) => {
             setIsLoggedIn(true);
             localStorage.setItem('authToken', data.token);
 
-            
-            const role = data?.user.role || role;
-            toast.success("Logged In Successfully as "+`${role}`, {
+            toast.success("Logged In Successfully", {
                 duration: 5000,
             });
 
-            if (role === "Admin") {
-            navigate("/admin");
-            } else if (role === "Moderator") {
-            navigate("/moderator");
-            } else {
-            navigate("/user", { state: { data } });
-            }
+            navigate("/dashboard");
 
             // navigate("/dashboard", { state: { userData:data } });
           } else {

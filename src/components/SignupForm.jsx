@@ -13,12 +13,11 @@ const SignupForm = ({ setIsLoggedIn }) => {
         name:"",
         email:"",
         password:"",
-        confirmPassword:""
+        confirmPassword:"",
     })
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [role, setRole] = useState("User");
 
     function changeHandler(event) {
 
@@ -31,27 +30,22 @@ const SignupForm = ({ setIsLoggedIn }) => {
 
     }
 
-    async function submitHandler(event) {
-        event.preventDefault();
+  async function submitHandler(event) {
+    event.preventDefault();
 
-        if(formData.password != formData.confirmPassword) {
-            toast.error("Passwords do not match");
-            return ;
-        }
+    if (formData.password !== formData.confirmPassword) {
+        toast.error("Passwords do not match");
+        return;
+    }
 
-        const { confirmPassword, ...rest } = formData; 
-        const accountData = { ...rest, role };
-
-
-        console.log(accountData);
-        try {
-        const baseUrl = import.meta.env.VITE_API_URL; // Assuming environment variable for API base URL
-        console.log(accountData);
-        console.log(baseUrl);
-        const response = await fetch(`${baseUrl}/signup`, {
+    const accountData = {...formData}; 
+    
+    try {
+        const baseUrl = import.meta.env.VITE_API_URL;
+        const response = await fetch(`${baseUrl}/api/v1/signup`, {
             method: "POST",
             headers: {
-            "Content-Type": "application/json",
+                "Content-Type": "application/json",
             },
             body: JSON.stringify(accountData),
         });
@@ -59,26 +53,23 @@ const SignupForm = ({ setIsLoggedIn }) => {
         const result = await response.json();
 
         if (response.ok) {
-            // Successful signup
             toast.success("Account created successfully!");
 
-            if(isLoggedIn){
-                navigate("/admin");
+            // Redirect based on role or login state
+            if (isLoggedIn) {
+                navigate("/dashboard"); // Admins go to dashboard
+            } else {
+                navigate("/login"); // Regular users go to login
             }
-            else {
-                navigate("/login");
-            }
-            
 
         } else {
-            // Handle errors from the backend
             toast.error(result.message || "Failed to create account.");
         }
-        } catch (error) {
+    } catch (error) {
         console.error("Error during signup:", error);
         toast.error("An error occurred. Please try again later.");
-        }
     }
+}
 
 
   return (
